@@ -1,0 +1,356 @@
+create database 69_Assignment2;
+/*
+Query OK, 1 row affected (0.17 sec)
+*/
+
+use 69_Assignment2;
+/*
+Query OK, 1 row affected (0.17 sec)
+*/
+
+create table Dept(Deptno int, Name varchar(20),Location varchar(26),Managerempid int,primary key(Deptno));
+/*
+Query OK, 0 rows affected (1.00 sec)
+*/
+
+desc Dept;
+/*
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| Deptno       | int         | NO   | PRI | NULL    |       |
+| Name         | varchar(20) | YES  |     | NULL    |       |
+| Location     | varchar(26) | YES  |     | NULL    |       |
+| Managerempid | int         | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+*/
+create table Employees(name varchar(20),empid int,address varchar(256),city varchar(20),dob date,date_of_joining date,gender char(1),salary int,deptno int,primary key(empid),foreign key(deptno) references Dept(Deptno),constraint `empid_chk` check (empid<100 and empid>301), constraint `gender_chk` check ( gender='M' or gender='F')
+/*
+Query OK, 0 rows affected (1.81 sec)
+*/
+desc Employees;
+/*
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| name            | varchar(20)  | YES  |     | NULL    |       |
+| empid           | int          | NO   | PRI | NULL    |       |
+| address         | varchar(256) | YES  |     | NULL    |       |
+| city            | varchar(20)  | YES  |     | NULL    |       |
+| dob             | date         | YES  |     | NULL    |       |
+| date_of_joining | date         | YES  |     | NULL    |       |
+| gender          | char(1)      | YES  |     | NULL    |       |
+| salary          | int          | YES  |     | NULL    |       |
+| deptno          | int          | YES  | MUL | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+9 rows in set (0.01 sec)
+*/
+create table Project(Projectid int,title varchar(20),city varchar(20),primary key(Projectid));
+/*
+Query OK, 0 rows affected (0.93 sec)
+*/
+desc Project;
+/*
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Projectid | int         | NO   | PRI | NULL    |       |
+| title     | varchar(20) | YES  |     | NULL    |       |
+| city      | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+*/
+create table works(empid int,Projectid int,total_hrs_worked int,foreign key(empid) references Employees(empid),foreign key(Projectid) references Project(Projectid));
+/*
+Query OK, 0 rows affected (1.83 sec)
+*/
+
+desc works;
+/*
++------------------+------+------+-----+---------+-------+
+| Field            | Type | Null | Key | Default | Extra |
++------------------+------+------+-----+---------+-------+
+| empid            | int  | YES  | MUL | NULL    |       |
+| Projectid        | int  | YES  | MUL | NULL    |       |
+| total_hrs_worked | int  | YES  |     | NULL    |       |
++------------------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+*/
+
+
+create table Dependant(empid int,name_of_dependant varchar(20),age int,relation varchar(20),foreign key(empid) references Employees(empid));
+/*
+Query OK, 0 rows affected (1.35 sec)
+*/
+
+desc Dependant
+/*
++-------------------+-------------+------+-----+---------+-------+
+| Field             | Type        | Null | Key | Default | Extra |
++-------------------+-------------+------+-----+---------+-------+
+| empid             | int         | YES  | MUL | NULL    |       |
+| name_of_dependant | varchar(20) | YES  |     | NULL    |       |
+| age               | int         | YES  |     | NULL    |       |
+| relation          | varchar(20) | YES  |     | NULL    |       |
++-------------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+*/
+insert into Dept values (1,'Development','Building 1',101),(2,'Testing','Building 1',101),(3,'Development','Building 2',102),(4,'Testing','Building 2',102),(5,'Planning','Building 3',103),(6,'Services','Building 3',103),(7,'Administrator','Main Building',104);
+/*
+Query OK, 7 rows affected (0.16 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+*/
+
+select * from Dept;
+/*
++--------+---------------+---------------+--------------+
+| Deptno | Name          | Location      | Managerempid |
++--------+---------------+---------------+--------------+
+|      1 | Development   | Building 1    |          101 |
+|      2 | Testing       | Building 1    |          101 |
+|      3 | Development   | Building 2    |          102 |
+|      4 | Testing       | Building 2    |          102 |
+|      5 | Planning      | Building 3    |          103 |
+|      6 | Services      | Building 3    |          103 |
+|      7 | Administrator | Main Building |          104 |
++--------+---------------+---------------+--------------+
+7 rows in set (0.00 sec)
+*/
+
+insert into Employees values ('Sanket Shirsath',100,'Panchavati','Nashik','2002-02-21','2017-04-20','L',100000,7);
+/*
+ERROR 3819 (HY000): Check constraint 'empid_chk' is violated.
+*/
+insert into Employees values ('Sanket Shirsath',101,'Panchavati','Nashik','2002-02-21','2017-04-20','L',100000,7);
+/*
+ERROR 3819 (HY000): Check constraint 'gender_chk' is violated.
+*/
+
+insert into Employees values ('Sanket Shirsath',104,'Panchavati','Nashik','2002-02-21','2017-04-20','M',100000,7),('Yashwant Shirore',102,'Kalwan','Nashik','2003-5-20','2018-02-10','M',50000,1),('Umair Khan',103,'Nashik Road','Nashik','2004-12-10','2019-06-14','M',70000,3),('Somnath P',101,'Panipat','Thani','1997-5-20','2019-2-20','M',800000,5),('Pranav Shimpi',105,'Chandni Chowk','New Delhi','1995-06-20','2020-04-20','M',60000,4),('Lily',106,'Manchester','United Kingdom','1990-02-25','2019-5-20','F',40000,6),('Hena P',107,'Patna','Bihar','2006-10-20','2020-5-15','F',20000,4);
+
+/*
+Query OK, 7 rows affected (0.13 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+*/
+
+select * from Employees;
+/*
++------------------+-------+---------------+----------------+------------+-----------------+--------+--------+--------+
+| name             | empid | address       | city           | dob        | date_of_joining | gender | salary | deptno |
++------------------+-------+---------------+----------------+------------+-----------------+--------+--------+--------+
+| Somnath P        |   101 | Panipat       | Thani          | 1997-05-20 | 2019-02-20      | M      | 800000 |      5 |
+| Yashwant Shirore |   102 | Kalwan        | Nashik         | 2003-05-20 | 2018-02-10      | M      |  50000 |      1 |
+| Umair Khan       |   103 | Nashik Road   | Nashik         | 2004-12-10 | 2019-06-14      | M      |  70000 |      3 |
+| Sanket Shirsath  |   104 | Panchavati    | Nashik         | 2002-02-21 | 2017-04-20      | M      | 100000 |      7 |
+| Pranav Shimpi    |   105 | Chandni Chowk | New Delhi      | 1995-06-20 | 2020-04-20      | M      |  60000 |      4 |
+| Lily             |   106 | Manchester    | United Kingdom | 1990-02-25 | 2019-05-20      | F      |  40000 |      6 |
+| Hena P           |   107 | Patna         | Bihar          | 2006-10-20 | 2020-05-15      | F      |  20000 |      4 |
++------------------+-------+---------------+----------------+------------+-----------------+--------+--------+--------+
+7 rows in set (0.00 sec)
+*/
+
+insert into Project values(1,'Banking Project','Nashik'),(2,'Testing Project','Pune'),(3,'ERP System','Mumbai'),(4,'Software Management','Pune');
+
+/*
++-----------+---------------------+--------+
+| Projectid | title               | city   |
++-----------+---------------------+--------+
+|         1 | Banking Project     | Nashik |
+|         2 | Testing Project     | Pune   |
+|         3 | ERP System          | Mumbai |
+|         4 | Software Management | Pune   |
++-----------+---------------------+--------+
+4 rows in set (0.00 sec)
+*/
+
+insert into works values(101,1,20),(102,2,20),(103,3,30),(104,4,25),(105,4,20),(106,2,10),(107,2,15);
+/*
+Query OK, 7 rows affected (0.12 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+*/
+
+select * from works;
+/*
++-------+-----------+------------------+
+| empid | Projectid | total_hrs_worked |
++-------+-----------+------------------+
+|   101 |         1 |               20 |
+|   102 |         2 |               20 |
+|   103 |         3 |               30 |
+|   104 |         4 |               25 |
+|   105 |         4 |               20 |
+|   106 |         2 |               10 |
+|   107 |         2 |               15 |
++-------+-----------+------------------+
+7 rows in set (0.00 sec)
+*/
+
+insert into Dependant values(101,'Ram',20,'Son'),(101,'Ravi',25,'Brother'),(102,'Sanjay',52,'Father'),(102,'Prathamesh',30,'Brother'),(103,'Harry',15,'Brother');
+/*
+Query OK, 5 rows affected (0.11 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+*/
+
+select * from Dependant;
+/*
++-------+-------------------+------+----------+
+| empid | name_of_dependant | age  | relation |
++-------+-------------------+------+----------+
+|   101 | Ram               |   20 | Son      |
+|   101 | Ravi              |   25 | Brother  |
+|   102 | Sanjay            |   52 | Father   |
+|   102 | Prathamesh        |   30 | Brother  |
+|   103 | Harry             |   15 | Brother  |
++-------+-------------------+------+----------+
+5 rows in set (0.00 sec)
+*/
+
+alter table Employees add MobileNumber varchar(13);
+/*
+Query OK, 0 rows affected (0.38 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+*/
+
+desc Employees;
+/*
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| name            | varchar(20)  | YES  |     | NULL    |       |
+| empid           | int          | NO   | PRI | NULL    |       |
+| address         | varchar(256) | YES  |     | NULL    |       |
+| city            | varchar(20)  | YES  |     | NULL    |       |
+| dob             | date         | YES  |     | NULL    |       |
+| date_of_joining | date         | YES  |     | NULL    |       |
+| gender          | char(1)      | YES  |     | NULL    |       |
+| salary          | int          | YES  |     | NULL    |       |
+| deptno          | int          | YES  | MUL | NULL    |       |
+| MobileNumber    | varchar(13)  | YES  |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+10 rows in set (0.01 sec)
+*/
+
+update Employees set MobileNumber='+91912453253' where empid>100;    
+/*
+Query OK, 7 rows affected (0.27 sec)
+Rows matched: 7  Changed: 7  Warnings: 0
+*/
+
+select * from Employees;
+/*
++------------------+-------+---------------+----------------+------------+-----------------+--------+--------+--------+--------------+
+| name             | empid | address       | city           | dob        | date_of_joining | gender | salary | deptno | MobileNumber |
++------------------+-------+---------------+----------------+------------+-----------------+--------+--------+--------+--------------+
+| Somnath P        |   101 | Panipat       | Thani          | 1997-05-20 | 2019-02-20      | M      | 800000 |      5 | +91912453253 |
+| Yashwant Shirore |   102 | Kalwan        | Nashik         | 2003-05-20 | 2018-02-10      | M      |  50000 |      1 | +91912453253 |
+| Umair Khan       |   103 | Nashik Road   | Nashik         | 2004-12-10 | 2019-06-14      | M      |  70000 |      3 | +91912453253 |
+| Sanket Shirsath  |   104 | Panchavati    | Nashik         | 2002-02-21 | 2017-04-20      | M      | 100000 |      7 | +91912453253 |
+| Pranav Shimpi    |   105 | Chandni Chowk | New Delhi      | 1995-06-20 | 2020-04-20      | M      |  60000 |      4 | +91912453253 |
+| Lily             |   106 | Manchester    | United Kingdom | 1990-02-25 | 2019-05-20      | F      |  40000 |      6 | +91912453253 |
+| Hena P           |   107 | Patna         | Bihar          | 2006-10-20 | 2020-05-15      | F      |  20000 |      4 | +91912453253 |
++------------------+-------+---------------+----------------+------------+-----------------+--------+--------+--------+--------------+
+7 rows in set (0.00 sec)
+*/
+
+select * from Employees where name like 's%';
+/*
++-----------------+-------+------------+--------+------------+-----------------+--------+--------+--------+--------------+
+| name            | empid | address    | city   | dob        | date_of_joining | gender | salary | deptno | MobileNumber |
++-----------------+-------+------------+--------+------------+-----------------+--------+--------+--------+--------------+
+| Somnath P       |   101 | Panipat    | Thani  | 1997-05-20 | 2019-02-20      | M      | 800000 |      5 | +91912453253 |
+| Sanket Shirsath |   104 | Panchavati | Nashik | 2002-02-21 | 2017-04-20      | M      | 100000 |      7 | +91912453253 |
++-----------------+-------+------------+--------+------------+-----------------+--------+--------+--------+--------------+
+*/
+
+select * from Employees where name like 's%';
+/*
++-----------------+-------+------------+--------+------------+-----------------+--------+--------+--------+--------------+
+| name            | empid | address    | city   | dob        | date_of_joining | gender | salary | deptno | MobileNumber |
++-----------------+-------+------------+--------+------------+-----------------+--------+--------+--------+--------------+
+| Somnath P       |   101 | Panipat    | Thani  | 1997-05-20 | 2019-02-20      | M      | 800000 |      5 | +91912453253 |
+| Sanket Shirsath |   104 | Panchavati | Nashik | 2002-02-21 | 2017-04-20      | M      | 100000 |      7 | +91912453253 |
++-----------------+-------+------------+--------+------------+-----------------+--------+--------+--------+--------------+
+*/
+
+select * from Employees where year(date_of_joining)>=2019 and year(date_of_joining)<=2020;
+/*
++---------------+-------+---------------+----------------+------------+-----------------+--------+--------+--------+--------------+
+| name          | empid | address       | city           | dob        | date_of_joining | gender | salary | deptno | MobileNumber |
++---------------+-------+---------------+----------------+------------+-----------------+--------+--------+--------+--------------+
+| Somnath P     |   101 | Panipat       | Thani          | 1997-05-20 | 2019-02-20      | M      | 800000 |      5 | +91912453253 |
+| Umair Khan    |   103 | Nashik Road   | Nashik         | 2004-12-10 | 2019-06-14      | M      |  70000 |      3 | +91912453253 |
+| Pranav Shimpi |   105 | Chandni Chowk | New Delhi      | 1995-06-20 | 2020-04-20      | M      |  60000 |      4 | +91912453253 |
+| Lily          |   106 | Manchester    | United Kingdom | 1990-02-25 | 2019-05-20      | F      |  40000 |      6 | +91912453253 |
+| Hena P        |   107 | Patna         | Bihar          | 2006-10-20 | 2020-05-15      | F      |  20000 |      4 | +91912453253 |
++---------------+-------+---------------+----------------+------------+-----------------+--------+--------+--------+--------------+
+5 rows in set (0.00 sec)
+*/
+
+select * from Employees where salary>50000;
+/*
++-----------------+-------+---------------+-----------+------------+-----------------+--------+--------+--------+--------------+
+| name            | empid | address       | city      | dob        | date_of_joining | gender | salary | deptno | MobileNumber |
++-----------------+-------+---------------+-----------+------------+-----------------+--------+--------+--------+--------------+
+| Somnath P       |   101 | Panipat       | Thani     | 1997-05-20 | 2019-02-20      | M      | 800000 |      5 | +91912453253 |
+| Umair Khan      |   103 | Nashik Road   | Nashik    | 2004-12-10 | 2019-06-14      | M      |  70000 |      3 | +91912453253 |
+| Sanket Shirsath |   104 | Panchavati    | Nashik    | 2002-02-21 | 2017-04-20      | M      | 100000 |      7 | +91912453253 |
+| Pranav Shimpi   |   105 | Chandni Chowk | New Delhi | 1995-06-20 | 2020-04-20      | M      |  60000 |      4 | +91912453253 |
++-----------------+-------+---------------+-----------+------------+-----------------+--------+--------+--------+--------------+
+4 rows in set (0.00 sec)
+*/
+
+select * from Project where city='Pune';
+/*
++-----------+---------------------+------+
+| Projectid | title               | city |
++-----------+---------------------+------+
+|         2 | Testing Project     | Pune |
+|         4 | Software Management | Pune |
++-----------+---------------------+------+
+2 rows in set (0.00 sec)
+*/
+
+select * from Dependant where empid=102;
+/*
++-------+-------------------+------+----------+
+| empid | name_of_dependant | age  | relation |
++-------+-------------------+------+----------+
+|   102 | Sanjay            |   52 | Father   |
+|   102 | Prathamesh        |   30 | Brother  |
++-------+-------------------+------+----------+
+2 rows in set (0.00 sec)
+*/
+
+select empid,name,dob,year(NOW())-year(dob) as age from Employees;
+/*
++-------+------------------+------------+------+
+| empid | name             | dob        | age  |
++-------+------------------+------------+------+
+|   101 | Somnath P        | 1997-05-20 |   25 |
+|   102 | Yashwant Shirore | 2003-05-20 |   19 |
+|   103 | Umair Khan       | 2004-12-10 |   18 |
+|   104 | Sanket Shirsath  | 2002-02-21 |   20 |
+|   105 | Pranav Shimpi    | 1995-06-20 |   27 |
+|   106 | Lily             | 1990-02-25 |   32 |
+|   107 | Hena P           | 2006-10-20 |   16 |
++-------+------------------+------------+------+
+7 rows in set (0.00 sec)
+*/
+
+select *,year(NOW())-year(dob) as age from Employees order by year(NOW())-year(dob) desc;
+/*
++------------------+-------+---------------+----------------+------------+-----------------+--------+--------+--------+--------------+------+
+| name             | empid | address       | city           | dob        | date_of_joining | gender | salary | deptno | MobileNumber | age  |
++------------------+-------+---------------+----------------+------------+-----------------+--------+--------+--------+--------------+------+
+| Lily             |   106 | Manchester    | United Kingdom | 1990-02-25 | 2019-05-20      | F      |  40000 |      6 | +91912453253 |   32 |
+| Pranav Shimpi    |   105 | Chandni Chowk | New Delhi      | 1995-06-20 | 2020-04-20      | M      |  60000 |      4 | +91912453253 |   27 |
+| Somnath P        |   101 | Panipat       | Thani          | 1997-05-20 | 2019-02-20      | M      | 800000 |      5 | +91912453253 |   25 |
+| Sanket Shirsath  |   104 | Panchavati    | Nashik         | 2002-02-21 | 2017-04-20      | M      | 100000 |      7 | +91912453253 |   20 |
+| Yashwant Shirore |   102 | Kalwan        | Nashik         | 2003-05-20 | 2018-02-10      | M      |  50000 |      1 | +91912453253 |   19 |
+| Umair Khan       |   103 | Nashik Road   | Nashik         | 2004-12-10 | 2019-06-14      | M      |  70000 |      3 | +91912453253 |   18 |
+| Hena P           |   107 | Patna         | Bihar          | 2006-10-20 | 2020-05-15      | F      |  20000 |      4 | +91912453253 |   16 |
++------------------+-------+---------------+----------------+------------+-----------------+--------+--------+--------+--------------+------+
+7 rows in set (0.00 sec)
+*/
