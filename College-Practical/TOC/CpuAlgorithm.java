@@ -65,19 +65,20 @@ class CpuAlgorithm {
         }
 
         public void menu() {
-            boolean flag = true;
-            char switchChoice;
-            while (flag) {
+            boolean fcfsflag = true;
+            int fcfsswitchChoice;
+            while (fcfsflag) {
                 System.out.println();
                 System.out.println("Menu:");
                 System.out.println("1.Input");
                 System.out.println("2.Output");
                 System.out.println("3.Calculate");
+                System.out.println("5.Exit");
                 System.out.print("Enter Choice:");
-                switchChoice = input.next().charAt(0);
+                fcfsswitchChoice = input.nextInt();
                 System.out.println();
-                switch (switchChoice) {
-                    case '1':
+                switch (fcfsswitchChoice) {
+                    case 1:
                         boolean innerLoop = true;
                         while (innerLoop) {
                             Process p = new Process();
@@ -89,7 +90,7 @@ class CpuAlgorithm {
                             }
                         }
                         break;
-                    case '2':
+                    case 2:
                         System.out.println();
                         for (String title : columnTitle) {
                             System.out.print(title + "        ");
@@ -98,10 +99,10 @@ class CpuAlgorithm {
                             processList.get(i).displayProcess();
                         }
                         break;
-                    case '3':
+                    case 3:
                         calculateMethod();
                         break;
-                    case '4':
+                    case 4:
                         for (int i = 0; i < processList.size(); i++) {
                             processList.get(i).ganttChartDisplayLayout();
                         }
@@ -109,6 +110,9 @@ class CpuAlgorithm {
                         for (int i = 0; i < processList.size(); i++) {
                             processList.get(i).ganttChartDisplayValue();
                         }
+                        break;
+                    case 5:
+                        fcfsflag = false;
                         break;
                     default:
                         System.out.println("Entered Invalid Option");
@@ -123,20 +127,20 @@ class CpuAlgorithm {
         }
 
         public void menu() {
-            boolean flag = true;
-            char switchChoice;
-            while (flag) {
+            boolean sjfFlag = true;
+            int sjfSwitchChoice;
+            while (sjfFlag) {
                 System.out.println();
-                ;
                 System.out.println("Menu:");
                 System.out.println("1.Input");
                 System.out.println("2.Output");
                 System.out.println("3.Calculate");
+                System.out.println("5.Exit");
                 System.out.print("Enter Choice:");
-                switchChoice = input.next().charAt(0);
+                sjfSwitchChoice = input.nextInt();
                 System.out.println();
-                switch (switchChoice) {
-                    case '1':
+                switch (sjfSwitchChoice) {
+                    case 1:
                         boolean innerLoop = true;
                         System.out.println("Note: For Non-Preemptive ,let Arrival Time be zero");
                         while (innerLoop) {
@@ -149,7 +153,7 @@ class CpuAlgorithm {
                             }
                         }
                         break;
-                    case '2':
+                    case 2:
                         System.out.println();
                         for (String title : columnTitle) {
                             System.out.print(title + "        ");
@@ -158,11 +162,11 @@ class CpuAlgorithm {
                             processList.get(i).displayProcess();
                         }
                         break;
-                    case '3':
+                    case 3:
                         sortArrayList(1);
                         calculateMethod();
                         break;
-                    case '4':
+                    case 4:
                         for (int i = 0; i < processList.size(); i++) {
                             processList.get(i).ganttChartDisplayLayout();
                         }
@@ -170,6 +174,9 @@ class CpuAlgorithm {
                         for (int i = 0; i < processList.size(); i++) {
                             processList.get(i).ganttChartDisplayValue();
                         }
+                        break;
+                    case 5:
+                    sjfFlag = false;
                         break;
                     default:
                         System.out.println("Entered Invalid Option");
@@ -194,20 +201,20 @@ class CpuAlgorithm {
             }
         }
         public void menu() {
-            boolean flag = true;
-            char switchChoice;
-            while (flag) {
+            boolean priorityFlag = true;
+            int prioritySwitchChoice;
+            while (priorityFlag) {
                 System.out.println();
-                ;
                 System.out.println("Menu:");
                 System.out.println("1.Input");
                 System.out.println("2.Output");
                 System.out.println("3.Calculate");
+                System.out.println("5.Exit");
                 System.out.print("Enter Choice:");
-                switchChoice = input.next().charAt(0);
+                prioritySwitchChoice = input.nextInt();
                 System.out.println();
-                switch (switchChoice) {
-                    case '1':
+                switch (prioritySwitchChoice) {
+                    case 1:
                         boolean innerLoop = true;
                         while (innerLoop) {
                             Process p = new Process();
@@ -219,7 +226,7 @@ class CpuAlgorithm {
                             }
                         }
                         break;
-                    case '2':
+                    case 2:
                         System.out.println();
                         for (String title : columnTitle) {
                             System.out.print(title + "        ");
@@ -228,18 +235,22 @@ class CpuAlgorithm {
                             processList.get(i).displayProcess();
                         }
                         break;
-                    case '3':
+                    case 3:
                         sortArrayList(0);
                         calculateMethod();
                         break;
-                    case '4':
+                    case 4:
                         for (int i = 0; i < processList.size(); i++) {
                             processList.get(i).ganttChartDisplayLayout();
-                        }
+                        }                System.out.println("5.Exit");
+
                         System.out.println();
                         for (int i = 0; i < processList.size(); i++) {
                             processList.get(i).ganttChartDisplayValue();
                         }
+                        break;
+                    case 5:
+                        priorityFlag = false;
                         break;
                     default:
                         System.out.println("Entered Invalid Option");
@@ -263,19 +274,20 @@ class CpuAlgorithm {
             }
         }
         public void menu() {
-            boolean flag = true;
-            char switchChoice;
-            while (flag) {
+            boolean roundsRobinflag = true;
+            int roundsRobinswitchChoice;
+            while (roundsRobinflag) {
                 System.out.println();
                 System.out.println("Menu:");
                 System.out.println("1.Input");
                 System.out.println("2.Output");
                 System.out.println("3.Calculate");
+                System.out.println("5.Exit");
                 System.out.print("Enter Choice:");
-                switchChoice = input.next().charAt(0);
+                roundsRobinswitchChoice = input.nextInt();
                 System.out.println();
-                switch (switchChoice) {
-                    case '1':
+                switch (roundsRobinswitchChoice) {
+                    case 1:
                         boolean innerLoop = true;
                         System.out.println("Note: For Non-Preemptive ,let Arrival Time be zero");
                         while (innerLoop) {
@@ -290,7 +302,7 @@ class CpuAlgorithm {
                             qutantumTime = input.nextInt();
                         }
                         break;
-                    case '2':
+                    case 2:
                         System.out.println();
                         for (String title : columnTitle) {
                             System.out.print(title + "        ");
@@ -299,11 +311,11 @@ class CpuAlgorithm {
                             processList.get(i).displayProcess();
                         }
                         break;
-                    case '3':
+                    case 3:
                         sortArrayList(0);
                         calculateMethod();
                         break;
-                    case '4':
+                    case 4:
                         for (int i = 0; i < processList.size(); i++) {
                             processList.get(i).ganttChartDisplayLayout();
                         }
@@ -311,6 +323,9 @@ class CpuAlgorithm {
                         for (int i = 0; i < processList.size(); i++) {
                             processList.get(i).ganttChartDisplayValue();
                         }
+                        break;
+                    case 5:
+                    roundsRobinflag = false;
                         break;
                     default:
                         System.out.println("Entered Invalid Option");
@@ -333,9 +348,46 @@ class CpuAlgorithm {
     }
     public static void main(String[] args) {
         processList = new ArrayList<>();
+        FCFS fcfs;
+        SJF sjf;
+        Priority priority;
         columnTitle = new String[] { "Process No", "", "Burst Time", "Waiting Time", "Turn Around Time" };
         input = new Scanner(System.in);
-        Priority priority = new Priority();
-        priority.menu();
+        int choice ;
+        Boolean flag=true;
+        while(flag){
+            System.out.println();
+            System.out.println("Menu:");
+            System.out.println("1.FCFS");
+            System.out.println("2.SJF");
+            System.out.println("3.Priority");
+            System.out.println("6.Exit");
+            System.out.print("Enter Choice:");
+            choice = input.nextInt();
+            switch(choice){
+                case 1:
+                fcfs = new FCFS();
+                fcfs.menu();
+                System.out.println("Exiting FCFS....");
+                break;
+                case 2:
+                sjf = new SJF();
+                sjf.menu();
+                System.out.println("Exiting SJF....");
+                break;
+                case 3:
+                priority = new Priority();
+                priority.menu();
+                System.out.println("Exiting Priority....");
+                break;
+                case 6:
+                flag = false;
+                System.out.println("Exiting ....");
+                break;
+                default:
+                System.out.println("Enter Valid Option");
+            }
+            }
+        }
+        
     }
-}
