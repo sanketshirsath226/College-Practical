@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -261,16 +262,34 @@ class CpuAlgorithm {
     public static class RoundsRobin {
         public int qutantumTime;
         RoundsRobin(){
+            columnTitle[1] = "Arrival Time";
             qutantumTime =0;
         }
         public void calculateMethod() {
-            int waitTime = 0;
-            int TurnAroundTime = 0;
-            for (int i = 0; i < processList.size(); i++) {
-                waitTime = TurnAroundTime;
-                TurnAroundTime = waitTime+processList.get(i).processInfo[1];
-                processList.get(i).processInfo[2] = waitTime;
-                processList.get(i).processInfo[3] = TurnAroundTime;
+            Boolean innerFlag=true;
+            int time=0;
+            int[] remainingBurstTime = new int[processList.size()];
+            for(int i=0;i<processList.size();i++){
+                remainingBurstTime[i] = processList.get(i).processInfo[1];
+            }
+            while(innerFlag){
+                innerFlag = false;
+                for(int i=0;i<processList.size();i++){
+                    if(remainingBurstTime[i]>0){
+                        innerFlag = true;
+                        if(remainingBurstTime[i]>qutantumTime){
+                            time+=qutantumTime;
+                            remainingBurstTime[i] -=qutantumTime;
+                        }else{
+                            time = time + remainingBurstTime[i];
+                            //Wait Time Calculation
+                            processList.get(i).processInfo[2] = (time-processList.get(i).processInfo[1]);
+                            remainingBurstTime[i] = 0;
+                            //Turn Around Time Calculation
+                            processList.get(i).processInfo[3] = (processList.get(i).processInfo[2]+processList.get(i).processInfo[1]);
+                        }
+                    }
+                }
             }
         }
         public void menu() {
@@ -289,7 +308,7 @@ class CpuAlgorithm {
                 switch (roundsRobinswitchChoice) {
                     case 1:
                         boolean innerLoop = true;
-                        System.out.println("Note: For Non-Preemptive ,let Arrival Time be zero");
+                        System.out.println("Note: Let Arrival Time be zero");
                         while (innerLoop) {
                             Process p = new Process();
                             processList.add(p);
@@ -298,9 +317,9 @@ class CpuAlgorithm {
                             if (input.next().toLowerCase().charAt(0) == 'n') {
                                 innerLoop = false;
                             }
-                            System.out.println("Enter Quantum Time:");
-                            qutantumTime = input.nextInt();
                         }
+                        System.out.println("Enter Quantum Time:");
+                        qutantumTime = input.nextInt();
                         break;
                     case 2:
                         System.out.println();
@@ -312,7 +331,6 @@ class CpuAlgorithm {
                         }
                         break;
                     case 3:
-                        sortArrayList(0);
                         calculateMethod();
                         break;
                     case 4:
@@ -351,17 +369,19 @@ class CpuAlgorithm {
         FCFS fcfs;
         SJF sjf;
         Priority priority;
+        RoundsRobin roundRobin;
         columnTitle = new String[] { "Process No", "", "Burst Time", "Waiting Time", "Turn Around Time" };
         input = new Scanner(System.in);
         int choice ;
         Boolean flag=true;
         while(flag){
-            System.out.println();
             System.out.println("Menu:");
             System.out.println("1.FCFS");
             System.out.println("2.SJF");
             System.out.println("3.Priority");
+            System.out.println("4.Round Robin");
             System.out.println("6.Exit");
+            System.out.println("Note:Calculate Option is used to calculate the waiting time and Turn Around Time.\nThus, After Input Option Select Calculate Option to Get Proper Output");
             System.out.print("Enter Choice:");
             choice = input.nextInt();
             switch(choice){
@@ -379,6 +399,11 @@ class CpuAlgorithm {
                 priority = new Priority();
                 priority.menu();
                 System.out.println("Exiting Priority....");
+                break;
+                case 4:
+                roundRobin = new RoundsRobin();
+                roundRobin.menu();
+                System.out.println("Exiting Round Robin....");
                 break;
                 case 6:
                 flag = false;
