@@ -30,7 +30,6 @@ class CpuAlgorithm {
                 processInfo[i] = input.nextInt();
             }
         }
-
         public void displayProcess() {
             System.out.print("\n" + ProcessName + "                ");
             for (int i = 0; i < processInfo.length; i++) {
@@ -412,7 +411,7 @@ class CpuAlgorithm {
                 default:
                 System.out.println("Enter Valid Option");
             }
-            }
         }
-        
     }
+        
+}
