@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -6,7 +5,6 @@ class CpuAlgorithm {
     public static String[] columnTitle;
     public static Scanner input;
     public static ArrayList<Process> processList;
-
     /*
      * Process Class
      * getProcess() : get Process Information
