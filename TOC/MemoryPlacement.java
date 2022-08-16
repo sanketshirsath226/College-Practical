@@ -93,7 +93,9 @@ public class MemoryPlacement {
                     if(process.getValue().processInfo[0]<=blockValue){
                         
                         process.getValue().processInfo[1] = index;
-                        process.get
+                        process.getValue().processInfo[2] =  process.getValue().processInfo[1] - blockValue;
+                        blockMemoryTemp.set(index, process.getValue().processInfo[2]);
+                        break;
                     }
                     index++;
                 }
