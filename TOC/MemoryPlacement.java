@@ -93,7 +93,7 @@ public class MemoryPlacement {
                     if(process.getValue().processInfo[0]<=blockValue){
                         
                         process.getValue().processInfo[1] = index;
-                        process.getValue().processInfo[2] =  process.getValue().processInfo[1] - blockValue;
+                        process.getValue().processInfo[2] =  blockValue-process.getValue().processInfo[0];
                         blockMemoryTemp.set(index, process.getValue().processInfo[2]);
                         break;
                     }
@@ -128,7 +128,7 @@ public class MemoryPlacement {
             boolean menuLoop = true;
             int menuSwitch;
             while(menuLoop){
-                System.out.println();
+                System.out.println("----------- First Fit -----------");
                 System.out.println("Menu:");
                 System.out.println("1.Input");
                 System.out.println("2.Calculate");
@@ -155,7 +155,186 @@ public class MemoryPlacement {
                         break;
                     }
             }
-            System.out.println("Exiting First Fit.....");
+            System.out.println("----------- Exiting First Fit -----------");
+        }
+    }
+    static class NextFit extends FirstFit{
+        NextFit(){
+        }
+        void calculateMethod(){
+            int index=0;
+            ArrayList<Integer> blockMemoryTemp = new ArrayList<>();
+            blockMemoryTemp.addAll(blockMemory);
+            for(Map.Entry<String,Process> process : processList.entrySet()){
+                while(index>=blockMemoryTemp.size())
+                    if(process.getValue().processInfo[0]<=blockMemoryTemp.get(index)){
+                        process.getValue().processInfo[1] = index;
+                        process.getValue().processInfo[2] =  blockMemoryTemp.get(index)-process.getValue().processInfo[0];
+                        blockMemoryTemp.set(index, process.getValue().processInfo[2]);
+                    }
+                    index++;
+                }
+            }
+        void menu(){
+            boolean menuLoop = true;
+            int menuSwitch;
+            while(menuLoop){
+                System.out.println("----------- Next Fit -----------");
+                System.out.println("Menu:");
+                System.out.println("1.Input");
+                System.out.println("2.Calculate");
+                System.out.println("3.Output");
+                System.out.println("5.Exit");
+                System.out.print("Enter Choice:");
+                menuSwitch = input.nextInt();
+                switch(menuSwitch){
+                    case 1:
+                        input();
+                        break;
+                    case 2:
+                        calculateMethod();
+                        break;
+                    case 3:
+                        output();
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        menuLoop = false;
+                        break;
+                    default:
+                        break;
+                    }
+            }
+            System.out.println("----------- Exiting Next Fit -----------");
+        }
+    }
+    static class WorstFit extends FirstFit{
+        WorstFit(){
+        }
+        void calculateMethod(){
+            ArrayList<Integer> blockMemoryTemp = new ArrayList<>();
+            blockMemoryTemp.addAll(blockMemory);
+            for(Map.Entry<String,Process> process : processList.entrySet()){
+                    //Calculating Max Index Value
+                    int maxIndex = maxBlockIndex(blockMemoryTemp, process.getValue().processInfo[0]);
+                    if(process.getValue().processInfo[0]<=blockMemoryTemp.get(maxIndex)){
+                        process.getValue().processInfo[1] = maxIndex;
+                        process.getValue().processInfo[2] =  blockMemoryTemp.get(maxIndex)-process.getValue().processInfo[0];
+                        blockMemoryTemp.set(maxIndex, process.getValue().processInfo[2]);
+                    }
+                }
+            }
+        void menu(){
+            boolean menuLoop = true;
+            int menuSwitch;
+            while(menuLoop){
+                System.out.println("----------- Worst Fit -----------");
+                System.out.println("Menu:");
+                System.out.println("1.Input");
+                System.out.println("2.Calculate");
+                System.out.println("3.Output");
+                System.out.println("5.Exit");
+                System.out.print("Enter Choice:");
+                menuSwitch = input.nextInt();
+                switch(menuSwitch){
+                    case 1:
+                        input();
+                        break;
+                    case 2:
+                        calculateMethod();
+                        break;
+                    case 3:
+                        output();
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        menuLoop = false;
+                        break;
+                    default:
+                        break;
+                    }
+            }
+            System.out.println("----------- Exiting Worst Fit -----------");
+        }
+        static int maxBlockIndex(ArrayList<Integer> blockMemory,int memorySize){
+            int maxIndex=0;
+            int index=0;
+            for(int blockValue:blockMemory){
+                if(blockValue>blockMemory.get(maxIndex)){
+                    maxIndex=index;
+                }
+                index++;
+            }
+            return maxIndex;
+        }
+    }
+    static class BestFit extends FirstFit{
+        BestFit(){
+        }
+        void calculateMethod(){
+            ArrayList<Integer> blockMemoryTemp = new ArrayList<>();
+            blockMemoryTemp.addAll(blockMemory);
+            for(Map.Entry<String,Process> process : processList.entrySet()){
+                    //Calculating Max Index Value
+                    int minIndex = minBlockIndex(blockMemoryTemp, process.getValue().processInfo[0]);
+                    if(minIndex>-1){
+                        process.getValue().processInfo[1] = minIndex;
+                        process.getValue().processInfo[2] =  blockMemoryTemp.get(minIndex)-process.getValue().processInfo[0];
+                        blockMemoryTemp.set(minIndex, process.getValue().processInfo[2]);
+                    }
+                }
+            }
+        void menu(){
+            boolean menuLoop = true;
+            int menuSwitch;
+            while(menuLoop){
+                System.out.println("----------- Best Fit -----------");
+                System.out.println("Menu:");
+                System.out.println("1.Input");
+                System.out.println("2.Calculate");
+                System.out.println("3.Output");
+                System.out.println("5.Exit");
+                System.out.print("Enter Choice:");
+                menuSwitch = input.nextInt();
+                switch(menuSwitch){
+                    case 1:
+                        input();
+                        break;
+                    case 2:
+                        calculateMethod();
+                        break;
+                    case 3:
+                        output();
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        menuLoop = false;
+                        break;
+                    default:
+                        break;
+                    }
+            }
+            System.out.println("----------- Exiting Best Fit -----------");
+        }
+        static int minBlockIndex(ArrayList<Integer> blockMemoryTemp,int memorySize){
+            int minIndex=0;
+            int index=0;
+            for(int blockValue:blockMemoryTemp){
+                if(blockValue<blockMemoryTemp.get(minIndex) && blockValue>=memorySize ){
+                    minIndex=index;
+                }
+                index++;
+            }
+            
+            if(minIndex==0){
+                if(blockMemory.get(minIndex)<memorySize){
+                    return -2;
+                }
+            }
+            return minIndex;
         }
     }
     static void display(){
@@ -170,10 +349,14 @@ public class MemoryPlacement {
         }
         System.out.println("");
     }
+
     public static void main(String[] args) {
         processList = new HashMap<>();
         blockMemory = new ArrayList<Integer>();
         FirstFit firstfit = new FirstFit();
+        NextFit nextFit = new NextFit();
+        WorstFit worstFit = new WorstFit();
+        BestFit bestFit = new BestFit();
         columnTitle = new String[]{"Process Name","Process Size","Memory Block","Memory Holes"};
         Boolean mainLoop = true;
         int innerSwitch;
@@ -195,10 +378,13 @@ public class MemoryPlacement {
                     firstfit.menu();
                     break;
                 case 2:
+                    nextFit.menu();
                     break;
                 case 3:
+                    worstFit.menu();
                     break;
                 case 4:
+                    bestFit.menu();
                     break;
                 case 5:
                     mainLoop = false;
