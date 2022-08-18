@@ -274,15 +274,18 @@ public class MemoryPlacement {
         BestFit(){
         }
         void calculateMethod(){
+            int minIndex;
             ArrayList<Integer> blockMemoryTemp = new ArrayList<>();
             blockMemoryTemp.addAll(blockMemory);
             for(Map.Entry<String,Process> process : processList.entrySet()){
                     //Calculating Max Index Value
-                    int minIndex = minBlockIndex(blockMemoryTemp, process.getValue().processInfo[0]);
-                    if(minIndex>-1){
+                     minIndex = minBlockIndex(blockMemoryTemp, process.getValue().processInfo[0]);
+                    if(minIndex!=-1){
                         process.getValue().processInfo[1] = minIndex;
                         process.getValue().processInfo[2] =  blockMemoryTemp.get(minIndex)-process.getValue().processInfo[0];
                         blockMemoryTemp.set(minIndex, process.getValue().processInfo[2]);
+                    }else{
+                        
                     }
                 }
             }
@@ -323,15 +326,15 @@ public class MemoryPlacement {
             int minIndex=0;
             int index=0;
             for(int blockValue:blockMemoryTemp){
-                if(blockValue<blockMemoryTemp.get(minIndex) && blockValue>=memorySize ){
+                if((blockValue<blockMemoryTemp.get(minIndex)) && (blockValue>=memorySize) ){
                     minIndex=index;
                 }
                 index++;
             }
             
             if(minIndex==0){
-                if(blockMemory.get(minIndex)<memorySize){
-                    return -2;
+                if(blockMemoryTemp.get(minIndex)<memorySize){
+                    return -1;
                 }
             }
             return minIndex;
