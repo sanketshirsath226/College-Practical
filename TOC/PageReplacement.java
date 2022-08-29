@@ -10,6 +10,8 @@ public class PageReplacement {
     public static int[] recentlyOrNotRecentlyUsed;
     public static String[] references;
     static void input(){
+            // Flush the Previous Input
+            input.nextLine();
             System.out.print("Enter Reference String:");
             references = input.nextLine().split(", ");
             System.out.print("Enter No of Frames:");
@@ -26,9 +28,7 @@ public class PageReplacement {
     }
     static class Fifo{
         public int frontptr;
-        Fifo(){
-            pageHits=0;
-            pageFaults=0;        
+        Fifo(){ 
         }
         int checkEmptySpace(){
             int spaceIndex = -1;
@@ -61,6 +61,8 @@ public class PageReplacement {
         }
         void calculate(){
             frontptr = -1;
+            pageFaults = 0;
+            pageHits = 0;
             int SpaceIndex;
             int replaceIndex;
             for(String reference:references){
@@ -77,6 +79,7 @@ public class PageReplacement {
                 }
                 output(reference);
             }
+            display();
         }
         void display(){
             System.out.println("Page Reference String Length:"+references.length);
@@ -144,6 +147,8 @@ public class PageReplacement {
         }
         void calculate(){
             frontptr = -1;
+            pageFaults = 0;
+            pageHits = 0;
             int SpaceIndex;
             int replaceIndex;
             int count=0;
@@ -172,6 +177,8 @@ public class PageReplacement {
         void calculate(){
             frontptr = -1;
             int SpaceIndex;
+            pageFaults = 0;
+            pageHits = 0;
             int replaceIndex;
             int count=0;
             for(String reference:references){
@@ -192,11 +199,70 @@ public class PageReplacement {
             display();
         }
     }
+    static boolean checkInputCondition(){
+        try{
+            String rough = references[0];
+        }catch(NullPointerException n){
+            return false;
+        }
+        return true;
+    }
     public static void main(String[] args) {
         input = new Scanner(System.in);
-        input();
-        LRU o = new LRU();
-        o.calculate();
+        Boolean mainLoop = true;
+        int innerSwitch;
+        Fifo fifo = new Fifo();
+        LRU lru = new LRU();
+        Optimal optimal = new Optimal();
+        input = new Scanner(System.in);
+        while(mainLoop){
+            /* ------Menu------ */
+            System.out.println();
+            System.out.println("Menu:");
+            System.out.println("1.Input");
+            System.out.println("2.FIFO");
+            System.out.println("3.LRU");
+            System.out.println("4.Optimal");
+            System.out.println("5.Exit");
+            System.out.print("Enter Choice:");
+            /* ------------- */
+            innerSwitch = input.nextInt();
+            switch(innerSwitch){
+                case 1:
+                    input();
+                    break;
+                case 2:
+                    if(!checkInputCondition()){
+                        System.out.println("Please Provide Input");
+                        break;
+                    }
+                    fifo.calculate();
+                    break;
+                case 3:
+                    if(!checkInputCondition()){
+                        System.out.println("Please Provide Input");
+                        break;
+                    }
+                    lru.calculate();
+                    break;
+                case 4:
+                    if(!checkInputCondition()){
+                        System.out.println("Please Provide Input");
+                        break;
+                    }
+                    optimal.calculate();
+                    break;
+                case 5:
+                    mainLoop = false;
+                    break;
+                default:
+                    System.out.println("Enter a Valid Choice");
+                    break;
+            }
+        }
+        System.out.println("Exiting......");
+    input.close();
+ 
         input.close();
     }
 }
