@@ -260,9 +260,7 @@ public class PageReplacement {
                     break;
             }
         }
-        System.out.println("Exiting......");
-    input.close();
- 
+        System.out.println("Exiting......"); 
         input.close();
     }
 }
