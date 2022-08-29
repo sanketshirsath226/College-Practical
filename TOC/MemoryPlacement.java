@@ -331,7 +331,6 @@ public class MemoryPlacement {
                 }
                 index++;
             }
-            
             if(minIndex==0){
                 if(blockMemoryTemp.get(minIndex)<memorySize){
                     return -1;
@@ -369,7 +368,7 @@ public class MemoryPlacement {
             System.out.println();
             System.out.println("Menu:");
             System.out.println("1.First");
-            System.out.println("2.New");
+            System.out.println("2.Next");
             System.out.println("3.Worst");
             System.out.println("4.Best");
             System.out.println("5.Exit");
