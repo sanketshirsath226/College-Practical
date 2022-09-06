@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-public class Rough {
-    public static void main(String[] args) {
-        ArrayList<Integer> obj = new ArrayList<>();
-        obj.add(10);
-        obj.add(20);
+import java.util.HashMap;
 
-        System.out.println(Arrays.toString(obj.toArray()));
+public class Rough {
+    public static HashMap<String,int[]> ganttChart;
+    public static void main(String[] args) {
+        ganttChart = new HashMap<String,int[]>();
+        ganttChart.put("Hello",new int[]{0,1});
     }
 }

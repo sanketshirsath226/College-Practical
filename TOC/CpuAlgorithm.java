@@ -1,10 +1,12 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.*;
 
 class CpuAlgorithm {
     public static String[] columnTitle;
     public static Scanner input;
     public static ArrayList<Process> processList;
+    public static ArrayList<String[]> ganttChart;
     /*
      * Process Class
      * getProcess() : get Process Information
@@ -35,16 +37,41 @@ class CpuAlgorithm {
                 System.out.print(processInfo[i] + "                    ");
             }
         }
-
-        public void ganttChartDisplayLayout() {
-            System.out.print("|   " + ProcessName + "  | ");
-        }
-
-        public void ganttChartDisplayValue() {
-            System.out.print(processInfo[2] + "       " + processInfo[3] + " ");
-        }
     }
-
+    /*Gantt Chart*/
+    public static void ganttChartDisplayValue(String[] processInfo) {
+        System.out.print("| "+processInfo[1] + "->" + processInfo[0] +"->" + processInfo[2] + " | ");
+    }
+    public static void calculateAvg(){
+        int avgWaitTime=0;
+        int avgTatTime=0;
+        for (int i = 0; i < processList.size(); i++) {
+           avgWaitTime += processList.get(i).processInfo[2];
+           avgTatTime  += processList.get(i).processInfo[3];
+        }
+        System.out.println();
+        System.out.println("Average:");
+        System.out.println("WaitTime:"+avgWaitTime/processList.size());
+        System.out.println("TurnAroundTime:"+avgWaitTime/processList.size());
+    }
+    public static void addToGanttChart(String name,int waitTime,int TurnAroundTime){
+        ganttChart.add(new String[]{name,Integer.toString(waitTime),Integer.toString(TurnAroundTime)});
+    }
+    public static void outputScreen(){
+        System.out.println();
+        System.out.println("| Arrival Time  -> ProcessName ->  Exit Time |\n");
+        for(int i=0;i<ganttChart.size();i++){
+            ganttChartDisplayValue(ganttChart.get(i));
+        }
+        System.out.println();
+        for (String title : columnTitle) {
+            System.out.print(title + "        ");
+        }
+        for (int i = 0; i < processList.size(); i++) {
+            processList.get(i).displayProcess();
+        }
+        calculateAvg();
+    }
     public static class FCFS {
         /*
          * Calculate Wait Time,Turn Around Time
@@ -53,13 +80,16 @@ class CpuAlgorithm {
             columnTitle[1] = "Arrival Time";
         }
         public void calculateMethod() {
+            ganttChart.clear();
             int waitTime = 0;
             int TurnAroundTime = 0;
             for (int i = 0; i < processList.size(); i++) {
-                waitTime = TurnAroundTime - processList.get(i).processInfo[0];
-                TurnAroundTime = waitTime + processList.get(i).processInfo[1];
+                waitTime = TurnAroundTime - processList.get(i).processInfo[0] ;
+                waitTime = (waitTime < 0) ? 0 : waitTime; 
+                TurnAroundTime = waitTime + processList.get(i).processInfo[1] ;
                 processList.get(i).processInfo[2] = waitTime;
                 processList.get(i).processInfo[3] = TurnAroundTime;
+                addToGanttChart(processList.get(i).ProcessName,waitTime,TurnAroundTime);
             }
         }
 
@@ -78,6 +108,7 @@ class CpuAlgorithm {
                 System.out.println();
                 switch (fcfsswitchChoice) {
                     case 1:
+                        processList.clear();
                         boolean innerLoop = true;
                         while (innerLoop) {
                             Process p = new Process();
@@ -90,25 +121,9 @@ class CpuAlgorithm {
                         }
                         break;
                     case 2:
-                        System.out.println();
-                        for (String title : columnTitle) {
-                            System.out.print(title + "        ");
-                        }
-                        for (int i = 0; i < processList.size(); i++) {
-                            processList.get(i).displayProcess();
-                        }
-                        break;
+                        outputScreen();
                     case 3:
                         calculateMethod();
-                        break;
-                    case 4:
-                        for (int i = 0; i < processList.size(); i++) {
-                            processList.get(i).ganttChartDisplayLayout();
-                        }
-                        System.out.println();
-                        for (int i = 0; i < processList.size(); i++) {
-                            processList.get(i).ganttChartDisplayValue();
-                        }
                         break;
                     case 5:
                         fcfsflag = false;
@@ -124,7 +139,19 @@ class CpuAlgorithm {
         SJF(){
             columnTitle[1] = "Arrival Time";
         }
-
+    public void calculateMethod() {
+            ganttChart.clear();
+            int waitTime = 0;
+            int TurnAroundTime = 0;
+             for (int i = 0; i < processList.size(); i++) {
+                waitTime = TurnAroundTime - processList.get(i).processInfo[0] ;
+                waitTime = (waitTime < 0) ? 0 : waitTime; 
+                TurnAroundTime = waitTime + processList.get(i).processInfo[1] ;
+                processList.get(i).processInfo[2] = waitTime;
+                processList.get(i).processInfo[3] = TurnAroundTime;
+                addToGanttChart(processList.get(i).ProcessName,waitTime,TurnAroundTime);
+            }
+        }
         public void menu() {
             boolean sjfFlag = true;
             int sjfSwitchChoice;
@@ -140,6 +167,7 @@ class CpuAlgorithm {
                 System.out.println();
                 switch (sjfSwitchChoice) {
                     case 1:
+                        processList.clear();
                         boolean innerLoop = true;
                         System.out.println("Note: For Non-Preemptive ,let Arrival Time be zero");
                         while (innerLoop) {
@@ -153,26 +181,13 @@ class CpuAlgorithm {
                         }
                         break;
                     case 2:
-                        System.out.println();
-                        for (String title : columnTitle) {
-                            System.out.print(title + "        ");
-                        }
-                        for (int i = 0; i < processList.size(); i++) {
-                            processList.get(i).displayProcess();
-                        }
-                        break;
+                        outputScreen();
                     case 3:
                         sortArrayList(1);
                         calculateMethod();
                         break;
                     case 4:
-                        for (int i = 0; i < processList.size(); i++) {
-                            processList.get(i).ganttChartDisplayLayout();
-                        }
-                        System.out.println();
-                        for (int i = 0; i < processList.size(); i++) {
-                            processList.get(i).ganttChartDisplayValue();
-                        }
+                        
                         break;
                     case 5:
                     sjfFlag = false;
@@ -190,13 +205,15 @@ class CpuAlgorithm {
         }
         
         public void calculateMethod() {
+            ganttChart.clear();
             int waitTime = 0;
             int TurnAroundTime = 0;
             for (int i = 0; i < processList.size(); i++) {
                 waitTime = TurnAroundTime;
-                TurnAroundTime = waitTime+processList.get(i).processInfo[1];
+                TurnAroundTime = TurnAroundTime+processList.get(i).processInfo[1];
                 processList.get(i).processInfo[2] = waitTime;
                 processList.get(i).processInfo[3] = TurnAroundTime;
+                addToGanttChart(processList.get(i).ProcessName,waitTime,TurnAroundTime);
             }
         }
         public void menu() {
@@ -214,6 +231,7 @@ class CpuAlgorithm {
                 System.out.println();
                 switch (prioritySwitchChoice) {
                     case 1:
+                        processList.clear();
                         boolean innerLoop = true;
                         while (innerLoop) {
                             Process p = new Process();
@@ -226,27 +244,10 @@ class CpuAlgorithm {
                         }
                         break;
                     case 2:
-                        System.out.println();
-                        for (String title : columnTitle) {
-                            System.out.print(title + "        ");
-                        }
-                        for (int i = 0; i < processList.size(); i++) {
-                            processList.get(i).displayProcess();
-                        }
-                        break;
+                         outputScreen();
                     case 3:
                         sortArrayList(0);
                         calculateMethod();
-                        break;
-                    case 4:
-                        for (int i = 0; i < processList.size(); i++) {
-                            processList.get(i).ganttChartDisplayLayout();
-                        }                System.out.println("5.Exit");
-
-                        System.out.println();
-                        for (int i = 0; i < processList.size(); i++) {
-                            processList.get(i).ganttChartDisplayValue();
-                        }
                         break;
                     case 5:
                         priorityFlag = false;
@@ -265,6 +266,7 @@ class CpuAlgorithm {
         }
         public void calculateMethod() {
             Boolean innerFlag=true;
+            ganttChart.clear();
             int time=0;
             int[] remainingBurstTime = new int[processList.size()];
             for(int i=0;i<processList.size();i++){
@@ -276,9 +278,11 @@ class CpuAlgorithm {
                     if(remainingBurstTime[i]>0){
                         innerFlag = true;
                         if(remainingBurstTime[i]>qutantumTime){
+                            addToGanttChart(processList.get(i).ProcessName,time,time+qutantumTime);
                             time+=qutantumTime;
-                            remainingBurstTime[i] -=qutantumTime;
+                            remainingBurstTime[i] -= qutantumTime;
                         }else{
+                            addToGanttChart(processList.get(i).ProcessName,time,time+remainingBurstTime[i]);
                             time = time + remainingBurstTime[i];
                             //Wait Time Calculation
                             processList.get(i).processInfo[2] = (time-processList.get(i).processInfo[1]);
@@ -305,6 +309,7 @@ class CpuAlgorithm {
                 System.out.println();
                 switch (roundsRobinswitchChoice) {
                     case 1:
+                        processList.clear();
                         boolean innerLoop = true;
                         System.out.println("Note: Let Arrival Time be zero");
                         while (innerLoop) {
@@ -320,25 +325,9 @@ class CpuAlgorithm {
                         qutantumTime = input.nextInt();
                         break;
                     case 2:
-                        System.out.println();
-                        for (String title : columnTitle) {
-                            System.out.print(title + "        ");
-                        }
-                        for (int i = 0; i < processList.size(); i++) {
-                            processList.get(i).displayProcess();
-                        }
-                        break;
+                        outputScreen();
                     case 3:
                         calculateMethod();
-                        break;
-                    case 4:
-                        for (int i = 0; i < processList.size(); i++) {
-                            processList.get(i).ganttChartDisplayLayout();
-                        }
-                        System.out.println();
-                        for (int i = 0; i < processList.size(); i++) {
-                            processList.get(i).ganttChartDisplayValue();
-                        }
                         break;
                     case 5:
                     roundsRobinflag = false;
@@ -372,6 +361,7 @@ class CpuAlgorithm {
         input = new Scanner(System.in);
         int choice ;
         Boolean flag=true;
+        ganttChart =  new ArrayList<String[]>();
         while(flag){
             System.out.println("Menu:");
             System.out.println("1.FCFS");
