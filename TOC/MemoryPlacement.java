@@ -9,6 +9,7 @@ public class MemoryPlacement {
     public static Process p;
     public static ArrayList<Integer> blockMemory;
     public static String[] columnTitle;
+    public static ArrayList<Integer> affectedBlock;
     static class Process{
         int[] processInfo; 
         Process(){
@@ -86,12 +87,13 @@ public class MemoryPlacement {
         void calculateMethod(){
             int index;
             ArrayList<Integer> blockMemoryTemp = new ArrayList<>();
+            affectedBlock.clear();
             blockMemoryTemp.addAll(blockMemory);
             for(Map.Entry<String,Process> process : processList.entrySet()){
                 index = 0;
                 for(int blockValue : blockMemoryTemp){
                     if(process.getValue().processInfo[0]<=blockValue){
-                        
+                        affectedBlock.add(index);
                         process.getValue().processInfo[1] = index;
                         process.getValue().processInfo[2] =  blockValue-process.getValue().processInfo[0];
                         blockMemoryTemp.set(index, process.getValue().processInfo[2]);
@@ -105,6 +107,7 @@ public class MemoryPlacement {
             /* 
                 Calling Display Block Memory Function
             */
+            System.out.println();
             display();
             /*
                 Displaying Columns
@@ -122,6 +125,9 @@ public class MemoryPlacement {
                 processValue.getValue().displayProcess(); 
                 System.out.println();
             }
+            /* Unallocated MemoryBlock*/
+            System.out.print("Unallocated Blocks are : ");
+            unallocatedMemoryBlocks(affectedBlock);
                         
         }
         void menu(){
@@ -162,18 +168,27 @@ public class MemoryPlacement {
         NextFit(){
         }
         void calculateMethod(){
-            int index=0;
+           int index=0;
+           boolean flag = false;
+           int count;
             ArrayList<Integer> blockMemoryTemp = new ArrayList<>();
+            affectedBlock.clear();
             blockMemoryTemp.addAll(blockMemory);
             for(Map.Entry<String,Process> process : processList.entrySet()){
-                while(index>=blockMemoryTemp.size())
+                count = 1;
+                index = index % (blockMemoryTemp.size() -1);
+                while(count!=blockMemoryTemp.size()){
                     if(process.getValue().processInfo[0]<=blockMemoryTemp.get(index)){
+                        affectedBlock.add(index);
                         process.getValue().processInfo[1] = index;
                         process.getValue().processInfo[2] =  blockMemoryTemp.get(index)-process.getValue().processInfo[0];
                         blockMemoryTemp.set(index, process.getValue().processInfo[2]);
+                        index ++;
                     }
-                    index++;
+                    count ++;
+                    index ++;
                 }
+            }
             }
         void menu(){
             boolean menuLoop = true;
@@ -214,6 +229,8 @@ public class MemoryPlacement {
         }
         void calculateMethod(){
             ArrayList<Integer> blockMemoryTemp = new ArrayList<>();
+            affectedBlock.clear();
+
             blockMemoryTemp.addAll(blockMemory);
             for(Map.Entry<String,Process> process : processList.entrySet()){
                     //Calculating Max Index Value
@@ -221,6 +238,7 @@ public class MemoryPlacement {
                     if(process.getValue().processInfo[0]<=blockMemoryTemp.get(maxIndex)){
                         process.getValue().processInfo[1] = maxIndex;
                         process.getValue().processInfo[2] =  blockMemoryTemp.get(maxIndex)-process.getValue().processInfo[0];
+                        affectedBlock.add(maxIndex);
                         blockMemoryTemp.set(maxIndex, process.getValue().processInfo[2]);
                     }
                 }
@@ -276,16 +294,16 @@ public class MemoryPlacement {
         void calculateMethod(){
             int minIndex;
             ArrayList<Integer> blockMemoryTemp = new ArrayList<>();
+            affectedBlock.clear();
             blockMemoryTemp.addAll(blockMemory);
             for(Map.Entry<String,Process> process : processList.entrySet()){
                     //Calculating Max Index Value
-                     minIndex = minBlockIndex(blockMemoryTemp, process.getValue().processInfo[0]);
+                    minIndex = minBlockIndex(blockMemoryTemp, process.getValue().processInfo[0]);
                     if(minIndex!=-1){
                         process.getValue().processInfo[1] = minIndex;
                         process.getValue().processInfo[2] =  blockMemoryTemp.get(minIndex)-process.getValue().processInfo[0];
+                        affectedBlock.add(minIndex);
                         blockMemoryTemp.set(minIndex, process.getValue().processInfo[2]);
-                    }else{
-                        
                     }
                 }
             }
@@ -323,21 +341,33 @@ public class MemoryPlacement {
             System.out.println("----------- Exiting Best Fit -----------");
         }
         static int minBlockIndex(ArrayList<Integer> blockMemoryTemp,int memorySize){
-            int minIndex=0;
+            int minIndex=-1;
             int index=0;
             for(int blockValue:blockMemoryTemp){
-                if((blockValue<blockMemoryTemp.get(minIndex)) && (blockValue>=memorySize) ){
-                    minIndex=index;
+                if(blockValue>=memorySize){
+                    if(minIndex==-1)
+                        minIndex = index;
+                    else if(blockMemoryTemp.get(minIndex) > blockValue)
+                        minIndex = index;
                 }
                 index++;
             }
-            if(minIndex==0){
-                if(blockMemoryTemp.get(minIndex)<memorySize){
-                    return -1;
-                }
-            }
             return minIndex;
         }
+    }
+    /* Outputing Unallocated Memory*/
+    static void unallocatedMemoryBlocks(ArrayList<Integer> allocatedMemoryBlock){
+        boolean flag=true;
+        for(int i=0;i<blockMemory.size();i++){
+            if(!allocatedMemoryBlock.contains(i)){
+                flag = false;
+                System.out.print(i+" ");
+            }
+        }
+        if(flag){
+            System.out.print("No Memory Block Used");
+        }
+        System.out.println();
     }
     static void display(){
         System.out.print("Block of Memory: ");
@@ -359,6 +389,7 @@ public class MemoryPlacement {
         NextFit nextFit = new NextFit();
         WorstFit worstFit = new WorstFit();
         BestFit bestFit = new BestFit();
+        affectedBlock = new ArrayList<>();
         columnTitle = new String[]{"Process Name","Process Size","Memory Block","Memory Holes"};
         Boolean mainLoop = true;
         int innerSwitch;
