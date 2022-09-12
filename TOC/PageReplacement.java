@@ -12,7 +12,7 @@ public class PageReplacement {
             // Flush the Previous Input
             input.nextLine();
             System.out.print("Enter Reference String:");
-            references = input.nextLine().split(", ");
+            references = input.nextLine().split(",");
             System.out.print("Enter No of Frames:");
             frameSize = input.nextInt();
             frames = new String[frameSize];
@@ -64,6 +64,7 @@ public class PageReplacement {
             pageHits = 0;
             int SpaceIndex;
             int replaceIndex;
+            resetFrames();
             for(String reference:references){
                 SpaceIndex = checkEmptySpace();
                 if(PageHit(reference)){
@@ -151,6 +152,7 @@ public class PageReplacement {
             int SpaceIndex;
             int replaceIndex;
             int count=0;
+            resetFrames();
             for(String reference:references){
                 SpaceIndex = checkEmptySpace();
                 if(PageHit(reference)){
@@ -180,6 +182,7 @@ public class PageReplacement {
             pageHits = 0;
             int replaceIndex;
             int count=0;
+            resetFrames();
             for(String reference:references){
                 SpaceIndex = checkEmptySpace();
                 if(PageHit(reference)){
@@ -196,6 +199,11 @@ public class PageReplacement {
                 count++;
             }
             display();
+        }
+    }
+    static void resetFrames(){
+        for(int i=0;i<frameSize;i++){
+            frames[i] = null;
         }
     }
     static boolean checkInputCondition(){

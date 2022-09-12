@@ -1,0 +1,76 @@
+1.FCFS:
+    Input: 
+        Process Id              Arrival Time            Burst Time
+        p1                      0                       2
+        p2                      3                       1
+        p3                      5                       6
+
+    Output: 
+        Process No        Arrival Time        Burst Time        Waiting Time        Turn Around Time
+        p1                0                    2                    0                    2
+        p2                3                    1                    0                    1
+        p3                5                    6                    0                    6
+        
+        Average:
+        WaitTime:0
+        TurnAroundTime:3
+
+2.SJF:
+    Input: 
+        Process Id              Arrival Time            Burst Time
+        p1                      0                       6
+        p2                      0                       8
+        p3                      0                       7
+        p4                      0                       3
+
+    Output:
+        Process No        Arrival Time        Burst Time        Waiting Time        Turn Around Time
+        p4                0                    3                    0                    3
+        p1                0                    6                    3                    9
+        p3                0                    7                    9                    16
+        p2                0                    8                    16                    24
+        
+        Average:
+        WaitTime:7
+        TurnAroundTime:13
+
+3.Priority
+    Input:
+        Process Id              Priority            Burst Time
+        p1                      3                       10
+        p2                      1                       1
+        p3                      4                       2
+        p4                      5                       1
+        p5                      2                       5
+
+    Output:
+        Process No        Prority        Burst Time        Waiting Time        Turn Around Time
+        p2                1                    1                    0                    1
+        p5                2                    5                    1                    6
+        p1                3                    10                    6                    16
+        p3                4                    2                    16                    18
+        p4                5                    1                    18                    19
+
+        Average:
+        WaitTime:8
+        TurnAroundTime:12
+
+4.Round Robin
+    Input:
+        Process Id              Arrival Time           Burst Time
+            p1                      0                       24
+            p2                      0                       3
+            p3                      0                       3
+    
+        Quantum Time : 4
+
+
+    Output:     
+        Process No        Arrival Time        Burst Time        Waiting Time        Turn Around Time
+        p1                0                    24                    6                    30
+        p2                0                    3                    4                    7
+        p3                0                    3                    7                    10
+
+        Average:
+        WaitTime:5
+        TurnAroundTime:15

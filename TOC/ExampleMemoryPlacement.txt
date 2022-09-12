@@ -1,0 +1,75 @@
+Memory Placement : 
+
+First Fit:
+
+	Input:
+		Process	Size
+		p1 		212
+		p2		417
+		p3		112
+		p4		426
+
+		Blocks: 100,500,200,300,600
+
+	Output:
+		Process Name      Process Size      Memory Block      Memory Holes
+		p1                  212                  1                  288
+		p2                  417                  4                  183
+		p3                  112                  1                  176
+		p4                  426                  -1                  -1
+		Unallocated Blocks are : 0 2 3
+Next Fit:
+	
+	Input:
+		Process	Size
+		p1 		10
+		p2		20
+		p3		30
+
+		Blocks: 5,10,20
+
+	Output:
+		Process Name      Process Size      Memory Block      Memory Holes
+		p1                  10                  1                  0
+		p2                  20                  2                  0
+		p3                  30                  -1                  -1
+		Unallocated Blocks are : 0
+
+Worst Fit:
+
+	Input:
+		Process	Size
+		p1 		212
+		p2		417
+		p3		112
+		p4		426
+
+		Blocks: 100,500,200,300,600
+
+	Output:
+		Process Name      Process Size      Memory Block      Memory Holes
+		p1                  212                  4                  388
+		p2                  417                  1                  83
+		p3                  112                  4                  276
+		p4                  426                  -1                  -1
+		Unallocated Blocks are : 0 2 3
+
+Best Fit:
+
+	Input:
+		Process	Size
+		p1 		212
+		p2		417
+		p3		112
+		p4		426
+
+		Blocks: 100,500,200,300,600
+		
+	Output: 
+		Process Name      Process Size      Memory Block      Memory Holes
+		p1                  212                  3                  88
+		p2                  417                  1                  83
+		p3                  112                  2                  88
+		p4                  426                  4                  174
+		Unallocated Blocks are : 0
+	

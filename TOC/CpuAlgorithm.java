@@ -52,17 +52,19 @@ class CpuAlgorithm {
         System.out.println();
         System.out.println("Average:");
         System.out.println("WaitTime:"+avgWaitTime/processList.size());
-        System.out.println("TurnAroundTime:"+avgWaitTime/processList.size());
+        System.out.println("TurnAroundTime:"+avgTatTime/processList.size());
     }
     public static void addToGanttChart(String name,int waitTime,int TurnAroundTime){
         ganttChart.add(new String[]{name,Integer.toString(waitTime),Integer.toString(TurnAroundTime)});
     }
     public static void outputScreen(){
         System.out.println();
-        System.out.println("| Arrival Time  -> ProcessName ->  Exit Time |\n");
+        System.out.println("Gantt Chart:");
+        System.out.print("| Arrival Time  -> ProcessName ->  Exit Time |\n");
         for(int i=0;i<ganttChart.size();i++){
             ganttChartDisplayValue(ganttChart.get(i));
         }
+        System.out.println();
         System.out.println();
         for (String title : columnTitle) {
             System.out.print(title + "        ");
@@ -70,6 +72,7 @@ class CpuAlgorithm {
         for (int i = 0; i < processList.size(); i++) {
             processList.get(i).displayProcess();
         }
+        System.out.println();
         calculateAvg();
     }
     public static class FCFS {
@@ -98,6 +101,7 @@ class CpuAlgorithm {
             int fcfsswitchChoice;
             while (fcfsflag) {
                 System.out.println();
+                System.out.println("------ FCFS ------");
                 System.out.println("Menu:");
                 System.out.println("1.Input");
                 System.out.println("2.Output");
@@ -157,6 +161,7 @@ class CpuAlgorithm {
             int sjfSwitchChoice;
             while (sjfFlag) {
                 System.out.println();
+                System.out.println("------ SJF ------");
                 System.out.println("Menu:");
                 System.out.println("1.Input");
                 System.out.println("2.Output");
@@ -221,6 +226,7 @@ class CpuAlgorithm {
             int prioritySwitchChoice;
             while (priorityFlag) {
                 System.out.println();
+                System.out.println("------ Priority ------");
                 System.out.println("Menu:");
                 System.out.println("1.Input");
                 System.out.println("2.Output");
@@ -299,6 +305,7 @@ class CpuAlgorithm {
             int roundsRobinswitchChoice;
             while (roundsRobinflag) {
                 System.out.println();
+                System.out.println("------ Round Robin------");
                 System.out.println("Menu:");
                 System.out.println("1.Input");
                 System.out.println("2.Output");
